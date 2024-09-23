@@ -1,4 +1,4 @@
-package com.zettabyte.ecommerce.costumer;
+package com.zettabyte.ecommerce.adress;
 
 import org.springframework.validation.annotation.Validated;
 

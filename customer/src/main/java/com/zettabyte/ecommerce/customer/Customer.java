@@ -1,11 +1,14 @@
-package com.zettabyte.ecommerce.costumer;
+package com.zettabyte.ecommerce.customer;
 
 import java.lang.reflect.Array;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.zettabyte.ecommerce.adress.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
