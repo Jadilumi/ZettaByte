@@ -1,4 +1,4 @@
-package com.zettabyte.ecommerce.costumer;
+package com.zettabyte.customer.entity;
 
 import org.springframework.validation.annotation.Validated;
 
@@ -16,12 +16,12 @@ import lombok.Setter;
 @Validated
 
 public class Address {
-	  private Long adressId;
-	  private Long clientId;
-	  private String street;
-	  private String city;
-	  private String state;
-	  private String number;
-	  private String complement;
-	  private String postalCode;
+	private Long adressId;
+	private Long clientId;
+	private String street;
+	private String city;
+	private String state;
+	private String number;
+	private String complement;
+	private String postalCode;
 }

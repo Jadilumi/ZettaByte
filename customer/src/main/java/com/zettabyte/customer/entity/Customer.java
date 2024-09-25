@@ -1,8 +1,8 @@
-package com.zettabyte.ecommerce.costumer;
+package com.zettabyte.customer.entity;
 
-import java.lang.reflect.Array;
 import java.sql.Timestamp;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -27,11 +27,11 @@ public class Customer {
 	private String name;
 	private String email;
 	private String password;
-	private ArrayList<Address> addresses;
-	private Boolean idAdmin;
-	private Boolean idActive;
-	private Timestamp createdAt;
-	private Timestamp updateddAt;
+	private List<Address> addresses;
+	private Boolean isAdmin;
+	private Boolean isActive;
+	private LocalDateTime createdAt;
+	private LocalDateTime updatedAt;
 	
 	
 	
