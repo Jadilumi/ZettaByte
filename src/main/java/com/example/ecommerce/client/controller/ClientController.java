@@ -36,7 +36,13 @@ public class ClientController {
 	@DeleteMapping("/del/{id}")
 	public ResponseEntity<String> deleteClient(@PathVariable Long id) {
 		clientService.deleteClient(id);
-		return new ResponseEntity<>("Cliente deletado com sucesso", HttpStatus.GONE);
+		return new ResponseEntity<>("Cliente deletado com sucesso", HttpStatus.OK);
+	}
+
+	@PostMapping("/inactivate/{id}")
+	public ResponseEntity<String> inactivateClient(@PathVariable Long id) {
+		clientService.inactivateClient(id);
+		return new ResponseEntity<>("Cliente inativado com sucesso", HttpStatus.GONE);
 	}
 
 	@GetMapping("/{id}")

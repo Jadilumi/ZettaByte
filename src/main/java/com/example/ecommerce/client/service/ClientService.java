@@ -3,17 +3,21 @@ package com.example.ecommerce.client.service;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.example.ecommerce.client.DTO.AddressDTO;
 import com.example.ecommerce.client.DTO.ClientDTO;
+import com.example.ecommerce.client.entity.Address;
 import com.example.ecommerce.client.entity.Client;
 import com.example.ecommerce.client.exception.CustomException;
+import com.example.ecommerce.client.repository.AddressRepository;
 import com.example.ecommerce.client.repository.ClientRepository;
 
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -21,17 +25,52 @@ import lombok.RequiredArgsConstructor;
 public class ClientService {
 
 	private final ClientRepository clientRepository;
+	private final AddressRepository addressRepository;
 
-	public Client createClient(ClientDTO receivedClient) {
-		Client newClient = new Client();
-		BeanUtils.copyProperties(receivedClient, newClient);
-		newClient.setCreatedAt(LocalDateTime.now());
-		newClient.setUpdatedAt(LocalDateTime.now());
-		newClient.setIsActive(true); // Define como ativo por padrão
-		return clientRepository.save(newClient);
+	public Client createClient(ClientDTO clientDTO) {
+		// Converter DTO para entidade
+		Client client = new Client();
+		client.setName(clientDTO.getName());
+		client.setEmail(clientDTO.getEmail());
+		client.setPassword(clientDTO.getPassword());
+		client.setIsAdmin(clientDTO.getIsAdmin());
+		client.setIsActive(clientDTO.getIsActive());
+		client.setCreatedAt(LocalDateTime.now());
+		client.setUpdatedAt(LocalDateTime.now());
+
+		// Salvar cliente primeiro
+		Client savedClient = clientRepository.save(client);
+
+		// Salvar endereços associados
+		if (clientDTO.getAddresses() != null) {
+			for (AddressDTO addressDTO : clientDTO.getAddresses()) {
+				Address address = new Address();
+				address.setStreet(addressDTO.getStreet());
+				address.setCity(addressDTO.getCity());
+				address.setState(addressDTO.getState());
+				address.setNumber(addressDTO.getNumber());
+				address.setComplement(addressDTO.getComplement());
+				address.setPostalCode(addressDTO.getPostalCode());
+				address.setClient(savedClient); // Associar o ID do cliente
+
+				addressRepository.save(address); // Salvar o endereço
+			}
+		}
+
+		return savedClient;
 	}
 
+	@Transactional // Assegura que a operação é realizada em uma transação
 	public void deleteClient(Long id) {
+		if (clientRepository.existsById(id)) { // Verifica se o cliente existe
+			clientRepository.deleteById(id); // Exclui o cliente
+		} else {
+			throw new EntityNotFoundException("Cliente não encontrado");
+		}
+	}
+
+	@Transactional
+	public void inactivateClient(Long id) {
 		Client client = clientRepository.findById(id)
 				.orElseThrow(() -> new CustomException("Cliente not found", HttpStatus.NOT_FOUND));
 		client.setIsActive(false); // Não excluir fisicamente, apenas desativar
@@ -69,7 +108,40 @@ public class ClientService {
 			existingClient.setIsActive(receivedClient.getIsActive());
 		}
 
+		// Atualizar a lista de endereços
+		if (receivedClient.getAddresses() != null) {
+			for (AddressDTO addressDTO : receivedClient.getAddresses()) {
+				if (addressDTO.getAddressId() != null) {
+					// Se o addressId estiver presente, atualiza o endereço existente
+					Optional<Address> existingAddressOpt = addressRepository.findById(addressDTO.getAddressId());
+					if (existingAddressOpt.isPresent()) {
+						Address existingAddress = existingAddressOpt.get();
+						existingAddress.setStreet(addressDTO.getStreet());
+						existingAddress.setCity(addressDTO.getCity());
+						existingAddress.setState(addressDTO.getState());
+						existingAddress.setNumber(addressDTO.getNumber());
+						existingAddress.setComplement(addressDTO.getComplement());
+						existingAddress.setPostalCode(addressDTO.getPostalCode());
+						addressRepository.save(existingAddress);
+					}
+				} 
+//					else {
+//					// Se não houver addressId, crie um novo endereço
+//					Address newAddress = new Address();
+//					newAddress.setClientId(existingClient.getClientId()); // Certifique-se de que isso não seja nulo
+//					newAddress.setStreet(addressDTO.getStreet());
+//					newAddress.setCity(addressDTO.getCity());
+//					newAddress.setState(addressDTO.getState());
+//					newAddress.setNumber(addressDTO.getNumber());
+//					newAddress.setComplement(addressDTO.getComplement());
+//					newAddress.setPostalCode(addressDTO.getPostalCode());
+//					addressRepository.save(newAddress);
+//				}
+			}
+		}
+
 		existingClient.setUpdatedAt(LocalDateTime.now());
 		return clientRepository.save(existingClient);
 	}
+
 }

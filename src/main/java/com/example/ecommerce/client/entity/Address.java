@@ -37,6 +37,9 @@ public class Address {
 	@Column(nullable = false)
 	private String number;
 
+	@Column(name = "complement", nullable = true)
+	private String complement;
+	
 	@Column(name = "postal_code", nullable = false)
 	private String postalCode;
 }

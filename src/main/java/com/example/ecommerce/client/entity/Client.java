@@ -21,7 +21,7 @@ public class Client {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long clientId;
 
 	@Column(nullable = false)
 	private String name;
@@ -32,7 +32,7 @@ public class Client {
 	@Column(nullable = false)
 	private String password;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "client")
+	@OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
 	private List<Address> addresses;
 
 	@Column(nullable = false)
@@ -46,4 +46,8 @@ public class Client {
 
 	@Column(name = "updated_at", nullable = false)
 	private LocalDateTime updatedAt;
+
+//	@ManyToOne
+//	@JoinColumn(name = "client_id", nullable = false)
+//	private Client client;
 }
