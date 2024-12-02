@@ -1,3 +1,6 @@
+
+server:
+  port: 8222
 spring:
   cloud:
     gateway:
@@ -5,10 +8,10 @@ spring:
         locator:
           enabled: true
       routes:
-        - id: customer-service
-          uri: lb:http//CUSTOMER-SERVICE
+        - id: client-service
+          uri: lb:http//CLIENT-SERVICE
           predicates:
-            - Path=/api/v1/customer/**
+            - Path=/api/v1/client-service/**
         - id: order-service
           uri: lb:http//ORDER-SERVICE
           predicates:
@@ -25,7 +28,3 @@ spring:
           uri: lb:http//PAYMENT-SERVICE
           predicates:
             - Path=/api/v1/payments/**
-
-
-  server:
-    port: 8222
