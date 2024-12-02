@@ -1,0 +1,30 @@
+server:
+  port: 8070
+
+spring:
+  application:
+    name: order-service
+  datasource:
+    url: jdbc:h2:mem:ms-order-db
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.type.mapping: orderConfirmation:br.com.jdlm.order.kafka.OrderConfirmation
+
+application:
+    config:
+        customer-url: http://localhost:8222/api/v1/customers #MUDAR PARA A PORTA Q USA NO SERVICO
+        payment-url: http://localhost:8222/api/v1/payments #MUDAR PARA A PORTA Q USA NO SERVICO
+        product-url: http://localhost:8222/api/v1/products #MUDAR PARA A PORTA Q USA NO SERVICO
