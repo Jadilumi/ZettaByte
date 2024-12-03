@@ -33,6 +33,6 @@ spring:
         auth: true
         starttls:
           enabled: true
-        connectiontimeout: 5000
+        connectionTimeOut: 5000
         timeout: 3000
-        writetimeout: 5000
+        writeTimeOut: 5000
