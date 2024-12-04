@@ -1,5 +1,5 @@
 spring:
   config:
-    import: optional:configserver:http://localhost:8888
+    import: optional:configserver:http://zettabyte-production-ac58.up.railway.app/
   application:
     name: product-service
