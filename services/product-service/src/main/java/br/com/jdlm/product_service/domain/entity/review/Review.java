@@ -37,9 +37,8 @@ public class Review {
     @JsonIgnoreProperties("reviews")
     private Product productId;
 
-    // TODO ver certinho o endpoint para alterar no service de review.
-//    @Column(name = "client_id")
-//    private UUID clientId;
+    @Column(name = "client_id")
+    private UUID clientId;
 
     // TODO colocar as imagens (não to conseguindo de jeito nhm essa buceta)
 

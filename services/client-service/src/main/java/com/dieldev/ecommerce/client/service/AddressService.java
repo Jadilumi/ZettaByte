@@ -12,6 +12,7 @@ import com.dieldev.ecommerce.client.repository.ClientRepository;
 import org.springframework.http.HttpStatus;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class AddressService {
@@ -22,16 +23,16 @@ public class AddressService {
 	@Autowired
 	private ClientRepository clientRepository;
 
-	public List<Address> getAllAddresses(Long clientId) {
+	public List<Address> getAllAddresses(UUID clientId) {
 		return addressRepository.findByClientClientId(clientId);
 	}
 
-	public Address getAddress(Long clientId, Long addressId) {
+	public Address getAddress(UUID clientId, Long addressId) {
 		return addressRepository.findById(addressId)
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Endereço não encontrado"));
 	}
 
-	public Address createAddress(Long clientId, Address address) {
+	public Address createAddress(UUID clientId, Address address) {
 		Client client = clientRepository.findById(clientId)
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));
 
@@ -39,7 +40,7 @@ public class AddressService {
 		return addressRepository.save(address);
 	}
 
-	public Address updateAddress(Long clientId, Long addressId, Address addressDetails) {
+	public Address updateAddress(UUID clientId, Long addressId, Address addressDetails) {
 		Address address = getAddress(clientId, addressId);
 
 		address.setStreet(addressDetails.getStreet());
@@ -51,7 +52,7 @@ public class AddressService {
 		return addressRepository.save(address);
 	}
 
-	public void deleteAddress(Long clientId, Long addressId) {
+	public void deleteAddress(UUID clientId, Long addressId) {
 		Address address = getAddress(clientId, addressId);
 		addressRepository.delete(address);
 	}

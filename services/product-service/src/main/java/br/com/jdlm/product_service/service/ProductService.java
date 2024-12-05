@@ -35,7 +35,7 @@ public class ProductService {
         createdProduct = productRepository.save(createdProduct);
 
         StockDTO postStock = new StockDTO(createdProduct.getId(), receivedProduct.actualStock());
-        restTemplate.postForObject("http://localhost:8082/stocks/first-entry", postStock, String.class);
+        restTemplate.postForObject("http://localhost:8090/stocks/first-entry", postStock, String.class);
 
         return createdProduct;
     }
@@ -66,7 +66,7 @@ public class ProductService {
     }
 
     private Integer getActualStockFromItsService(UUID productId) {
-        String stockServiceUrl = "http://localhost:8082/stocks/" + productId;
+        String stockServiceUrl = "http://localhost:8090/stocks/" + productId;
         StockDTO stockDTO = restTemplate.getForObject(stockServiceUrl, StockDTO.class);
         return (stockDTO != null) ? stockDTO.actualStock() : 0;
     }

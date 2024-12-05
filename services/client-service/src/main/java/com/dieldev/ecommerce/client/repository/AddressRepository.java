@@ -6,8 +6,9 @@ import org.springframework.stereotype.Repository;
 import com.dieldev.ecommerce.client.entity.Address;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public interface AddressRepository extends JpaRepository<Address, Long> {
-	List<Address> findByClientClientId(Long clientId);
+	List<Address> findByClientClientId(UUID clientId);
 }

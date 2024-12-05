@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -13,7 +15,7 @@ import lombok.Setter;
 @Setter
 public class AddressDTO {
     private Long addressId;      // ID do endereço
-    private Long clientId;       // ID do cliente associado ao endereço
+    private UUID clientId;       // ID do cliente associado ao endereço
     private String street;       // Rua
     private String city;         // Cidade
     private String state;        // Estado
