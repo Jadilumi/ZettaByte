@@ -4,6 +4,8 @@ import br.com.jdlm.order.order.Order;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.UUID;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -18,7 +20,7 @@ public class OrderLine {
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
-    private Integer productId;
+    private UUID productId;
     private double quantity;
 
 }
