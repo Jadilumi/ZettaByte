@@ -1,12 +1,13 @@
 package br.com.jdlm.order.product;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 public record PurchaseResponse(
-        Integer produtcId,
+        UUID productId,
         String name,
         String description,
         BigDecimal price,
-        double quantity
+        Integer quantity
 ) {
 }

@@ -34,7 +34,7 @@ public class ProductClient {
                 new ParameterizedTypeReference<>() {};
 
         ResponseEntity<List<PurchaseResponse>> responseEntity = restTemplate.exchange(
-                productUrl + "/purchase",
+                productUrl + "/products/purchase",
                 POST,
                 requestEntity,
                 responseType
@@ -45,7 +45,5 @@ public class ProductClient {
         }
 
         return responseEntity.getBody();
-
-
     }
 }

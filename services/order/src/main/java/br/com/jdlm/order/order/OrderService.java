@@ -60,6 +60,7 @@ public class OrderService {
                 order.getReference(),
                 customer
         );
+
         paymentClient.requestOrderPayment(paymentRequest);
 
         orderProducer.sendOrderConfirmation(

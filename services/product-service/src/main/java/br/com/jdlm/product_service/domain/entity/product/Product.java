@@ -34,14 +34,11 @@ public class Product {
 
     private BigDecimal price;
 
-    @Transient
     private Integer actualStock;
 
     @ManyToOne
     @JsonIgnoreProperties("products")
     private Category category;
-
-    // TODO colocar as imagens (não to conseguindo de jeito nhm essa buceta)
 
     @OneToMany(mappedBy = "productId")
     @JsonIgnoreProperties("productId")
@@ -56,4 +53,9 @@ public class Product {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+
+    public void removeProductFromStock(Integer quantity) {
+        this.actualStock -= quantity;
+    }
 }

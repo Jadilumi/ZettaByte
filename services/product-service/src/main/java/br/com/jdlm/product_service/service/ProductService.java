@@ -1,9 +1,7 @@
 package br.com.jdlm.product_service.service;
 
 import br.com.jdlm.product_service.domain.entity.category.Category;
-import br.com.jdlm.product_service.domain.entity.product.Product;
-import br.com.jdlm.product_service.domain.entity.product.ProductDTO;
-import br.com.jdlm.product_service.domain.entity.product.StockDTO;
+import br.com.jdlm.product_service.domain.entity.product.*;
 import br.com.jdlm.product_service.domain.repository.ProductRepository;
 import br.com.jdlm.product_service.exception.CustomException;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -100,6 +100,22 @@ public class ProductService {
         }
 
         return productRepository.save(editedProduct);
+    }
+
+
+    public List<PurchaseResponse> removeProductFromStock(List<PurchaseRequest> purchaseRequest) {
+        List<PurchaseResponse> purchaseResponses = new ArrayList<>();
+        for (PurchaseRequest purchaseRequest1 : purchaseRequest) {
+            Product product = this.productRepository.findById(purchaseRequest1.productId())
+                    .orElseThrow(() -> new CustomException("Product not found", HttpStatus.NOT_FOUND));
+
+            product.removeProductFromStock(purchaseRequest1.quantity());
+
+            PurchaseResponse response = new PurchaseResponse(product.getId(), product.getName(), product.getDescription(), product.getPrice(), product.getActualStock());
+            purchaseResponses.add(response);
+        }
+
+        return purchaseResponses;
     }
 
 }

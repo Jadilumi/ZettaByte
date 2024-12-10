@@ -2,6 +2,8 @@ package br.com.jdlm.product_service.controller;
 
 import br.com.jdlm.product_service.domain.entity.product.Product;
 import br.com.jdlm.product_service.domain.entity.product.ProductDTO;
+import br.com.jdlm.product_service.domain.entity.product.PurchaseRequest;
+import br.com.jdlm.product_service.domain.entity.product.PurchaseResponse;
 import br.com.jdlm.product_service.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -9,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -21,6 +24,11 @@ public class ProductController {
     @PostMapping("/save")
     public ResponseEntity<Product> createProduct(@RequestBody ProductDTO receivedProduct) {
         return new ResponseEntity<>(productService.createProduct(receivedProduct), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/purchase")
+    public ResponseEntity<List<PurchaseResponse>> createProduct(@RequestBody List<PurchaseRequest> purchaseRequest) {
+        return new ResponseEntity<>(productService.removeProductFromStock(purchaseRequest), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/del/{id}")
