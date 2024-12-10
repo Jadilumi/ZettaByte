@@ -1,7 +1,15 @@
-
 server:
   port: 8222
 spring:
+  main:
+    web-application-type: reactive
+    allow-bean-definition-overriding: true
+
+  security:
+    oauth2:
+      resource-server:
+        jwt:
+          issuer-uri: "http://localhost:9098/realms/micro-service"
   cloud:
     gateway:
       discovery:

@@ -29,7 +29,8 @@ public class CategoryController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<Page<Category>> getAllCategories(@RequestParam int page, @RequestParam int size) {
+    public ResponseEntity<Page<Category>> getAllCategories(@RequestParam(defaultValue = "0") int page,
+                                                           @RequestParam(defaultValue = "10") int size) {
         return new ResponseEntity<>(categoryService.getCategories(page, size), HttpStatus.OK);
     }
 
