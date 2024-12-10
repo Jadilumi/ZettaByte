@@ -2,6 +2,8 @@ package br.com.jdlm.product_service.controller;
 
 import br.com.jdlm.product_service.domain.entity.product.Product;
 import br.com.jdlm.product_service.domain.entity.product.ProductDTO;
+import br.com.jdlm.product_service.domain.entity.product.PurchaseRequest;
+import br.com.jdlm.product_service.domain.entity.product.PurchaseResponse;
 import br.com.jdlm.product_service.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -9,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -23,6 +26,11 @@ public class ProductController {
         return new ResponseEntity<>(productService.createProduct(receivedProduct), HttpStatus.CREATED);
     }
 
+    @PostMapping("/purchase")
+    public ResponseEntity<List<PurchaseResponse>> createProduct(@RequestBody List<PurchaseRequest> purchaseRequest) {
+        return new ResponseEntity<>(productService.removeProductFromStock(purchaseRequest), HttpStatus.ACCEPTED);
+    }
+
     @DeleteMapping("/del/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable UUID id) {
         productService.deleteProduct(id);
@@ -35,7 +43,8 @@ public class ProductController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<Page<Product>> getProducts(@RequestParam int page, @RequestParam int size) {
+    public ResponseEntity<Page<Product>> getProducts(@RequestParam(defaultValue = "0") int page,
+                                                     @RequestParam(defaultValue = "10") int size) {
         return new ResponseEntity<>(productService.getProducts(page, size), HttpStatus.OK);
     }
 

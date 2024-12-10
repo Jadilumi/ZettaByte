@@ -2,6 +2,7 @@ package com.dieldev.ecommerce.client.DTO;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +16,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ClientDTO {
-    private Long id;  						// O ID do cliente
+    private UUID id;  						// O ID do cliente
     private String name;  					// Nome do cliente
     private String email;  					// Email do cliente
     private String password;                // Senha do cliente

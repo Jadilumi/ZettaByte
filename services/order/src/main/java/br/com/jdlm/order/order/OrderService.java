@@ -13,6 +13,7 @@ import br.com.jdlm.order.product.PurchaseRequest;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,7 +41,7 @@ public class OrderService {
 
         var order = this.orderRepository.save(this.mapper.toOrder(request));
 
-        for(PurchaseRequest purchaseRequest : request.products()){
+        for (PurchaseRequest purchaseRequest : request.products()) {
             orderLineService.saveOrderLine(
                     new OrderLineRequest(
                             null,
@@ -51,6 +52,7 @@ public class OrderService {
             );
         }
 
+
         var paymentRequest = new PaymentRequest(
                 request.amount(),
                 request.paymentMethod(),
@@ -58,6 +60,7 @@ public class OrderService {
                 order.getReference(),
                 customer
         );
+
         paymentClient.requestOrderPayment(paymentRequest);
 
         orderProducer.sendOrderConfirmation(
@@ -84,6 +87,6 @@ public class OrderService {
     public OrderResponse findById(Integer orderId) {
         return orderRepository.findById(orderId)
                 .map(mapper::fromOrder)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("No order found with the provided ID: %d",orderId)));
+                .orElseThrow(() -> new EntityNotFoundException(String.format("No order found with the provided ID: %d", orderId)));
     }
 }

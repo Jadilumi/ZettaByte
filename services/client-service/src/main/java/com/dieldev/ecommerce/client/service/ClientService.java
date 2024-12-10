@@ -2,6 +2,7 @@ package com.dieldev.ecommerce.client.service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -61,7 +62,7 @@ public class ClientService {
 	}
 
 	@Transactional // Assegura que a operação é realizada em uma transação
-	public void deleteClient(Long id) {
+	public void deleteClient(UUID id) {
 		if (clientRepository.existsById(id)) { // Verifica se o cliente existe
 			clientRepository.deleteById(id); // Exclui o cliente
 		} else {
@@ -70,14 +71,14 @@ public class ClientService {
 	}
 
 	@Transactional
-	public void inactivateClient(Long id) {
+	public void inactivateClient(UUID id) {
 		Client client = clientRepository.findById(id)
 				.orElseThrow(() -> new CustomException("Cliente not found", HttpStatus.NOT_FOUND));
 		client.setIsActive(false); // Não excluir fisicamente, apenas desativa
 		clientRepository.save(client);
 	}
 
-	public Optional<Client> getClientById(Long id) {
+	public Optional<Client> getClientById(UUID id) {
 		return clientRepository.findById(id).map(client -> {
 			client.setUpdatedAt(LocalDateTime.now());
 			return client;
@@ -88,7 +89,7 @@ public class ClientService {
 		return clientRepository.findAll(PageRequest.of(page, size));
 	}
 
-	public Client updateClient(Long id, ClientDTO receivedClient) {
+	public Client updateClient(UUID id, ClientDTO receivedClient) {
 		Client existingClient = clientRepository.findById(id)
 				.orElseThrow(() -> new CustomException("Cliente not found", HttpStatus.NOT_FOUND));
 

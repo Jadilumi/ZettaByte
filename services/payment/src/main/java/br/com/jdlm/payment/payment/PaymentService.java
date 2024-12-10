@@ -19,6 +19,8 @@ public class PaymentService {
 
         var payment = paymentRepository.save(mapper.toPayment(request));
 
+
+
         notificationProducer.sendNotification(
                 new PaymentNotificationRequest(
                         request.orderReference(),
