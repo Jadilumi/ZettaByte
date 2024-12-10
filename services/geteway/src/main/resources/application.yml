@@ -1,12 +1,57 @@
+server:
+  port: 8222
+
 spring:
+  application:
+    name: gateway-service
   main:
+    web-application-type: reactive
     allow-bean-definition-overriding: true
+
   security:
     oauth2:
       resource-server:
         jwt:
           issuer-uri: "http://localhost:9098/realms/micro-service"
-  config:
-    import: optional:configserver:http://localhost:8888
-  application:
-    name: gateway-service
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        # Client Service - Rota para o Client Service
+        - id: client-service
+          uri: lb://CLIENT-SERVICE
+          predicates:
+            - Path=/api/v1/client-service/**
+          filters:
+            - StripPrefix=3  # Remover os 3 primeiros prefixos, ajustando conforme necessário
+
+        # Orders Service - Rota para o Order Service
+        - id: order-service
+          uri: lb://ORDER-SERVICE
+          predicates:
+            - Path=/api/v1/orders/**
+          filters:
+            - StripPrefix=3  # Ajuste conforme o necessário para remover o prefixo
+
+        # Product Service - Rota para o Product Service
+        - id: product-service
+          uri: lb://PRODUCT-SERVICE
+          predicates:
+            - Path=/api/v1/products/**
+          filters:
+            - StripPrefix=3  # Remove o prefixo '/api/v1/products' antes de encaminhar a requisição
+
+        # Payment Service - Rota para o Payment Service
+        - id: payment-service
+          uri: lb://PAYMENT-SERVICE
+          predicates:
+            - Path=/api/v1/payments/**
+          filters:
+            - StripPrefix=3  # Remover o prefixo '/api/v1/payments'
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG

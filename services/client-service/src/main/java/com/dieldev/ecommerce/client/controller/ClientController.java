@@ -1,6 +1,7 @@
 package com.dieldev.ecommerce.client.controller;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -34,19 +35,19 @@ public class ClientController {
 	}
 
 	@DeleteMapping("/del/{id}")
-	public ResponseEntity<String> deleteClient(@PathVariable Long id) {
+	public ResponseEntity<String> deleteClient(@PathVariable UUID id) {
 		clientService.deleteClient(id);
 		return new ResponseEntity<>("Cliente deletado com sucesso", HttpStatus.OK);
 	}
 
 	@PostMapping("/inactivate/{id}")
-	public ResponseEntity<String> inactivateClient(@PathVariable Long id) {
+	public ResponseEntity<String> inactivateClient(@PathVariable UUID id) {
 		clientService.inactivateClient(id);
 		return new ResponseEntity<>("Cliente inativado com sucesso", HttpStatus.GONE);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Client> getClientById(@PathVariable Long id) {
+	public ResponseEntity<Client> getClientById(@PathVariable UUID id) {
 		Optional<Client> optionalClient = clientService.getClientById(id);
 
 		if (optionalClient.isPresent()) {
@@ -62,13 +63,13 @@ public class ClientController {
 	}
 
 	@GetMapping("/exists/{id}")
-	public ResponseEntity<Boolean> existsClientById(@PathVariable Long id) {
+	public ResponseEntity<Boolean> existsClientById(@PathVariable UUID id) {
 		boolean exists = clientService.getClientById(id).isPresent(); // Verifica se o cliente existe
 		return new ResponseEntity<>(exists, HttpStatus.OK); // Retorna true ou false
 	}
 
 	@PutMapping("/edit/{id}")
-	public ResponseEntity<Client> editClient(@RequestBody ClientDTO receivedClient, @PathVariable Long id) {
+	public ResponseEntity<Client> editClient(@RequestBody ClientDTO receivedClient, @PathVariable UUID id) {
 		return new ResponseEntity<>(clientService.updateClient(id, receivedClient), HttpStatus.ACCEPTED);
 	}
 }

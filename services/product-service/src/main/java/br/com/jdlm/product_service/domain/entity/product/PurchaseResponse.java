@@ -1,4 +1,4 @@
-package br.com.jdlm.order.product;
+package br.com.jdlm.product_service.domain.entity.product;
 
 import java.math.BigDecimal;
 import java.util.UUID;

@@ -2,6 +2,7 @@ package com.dieldev.ecommerce.client.entity;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -20,8 +21,8 @@ import lombok.Setter;
 public class Client {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long clientId;
+	@GeneratedValue(strategy = GenerationType.UUID)
+	private UUID clientId;
 
 	@Column(nullable = false)
 	private String name;
